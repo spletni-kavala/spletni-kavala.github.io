@@ -19,25 +19,31 @@ hugo server -D
 hugo new content blog/my-post.md
 ```
 
-2. Открой `content/blog/my-post.md`, отредактируй:
+2. Отредактируй `content/blog/my-post.md`:
 
 ```markdown
----
-title: "Заголовок поста"
-date: 2026-07-24
----
++++
+title = "Заголовок поста"
+date = 2026-07-24
+slug = "my-post"
+tags = []
++++
 
 Текст поста в формате Markdown.
 ```
 
-3. Убери `draft: true` если хочешь опубликовать сразу.
+> Если название кириллическое — обязательно добавляй `slug = "english-name"`, иначе URL будет в процентах.
+
+3. Картинки клади в `static/images/` и подключай так:
+
+```markdown
+![Подпись](/images/photo.jpg)
+```
 
 ## Как опубликовать
 
 ```bash
-git add -A
-git commit -m "New post: my-post"
-git push
+git add -A && git commit -m "New post: my-post" && git push
 ```
 
 Сайт обновится автоматически через 30-60 секунд.
@@ -50,4 +56,6 @@ content/
   about.md         — страница "О блоге"
   blog/
     my-post.md     — посты
+static/
+  images/          — картинки
 ```
