@@ -24,12 +24,17 @@
 </p>
 
 {{ if eq .Type "blog" }}
+<style>
+  #cusdis_thread .PoweredBy,
+  #cusdis_thread [data-field="email"] { display: none !important; }
+</style>
 <div id="cusdis_thread"
   data-host="https://cusdis.com"
   data-app-id="51504f4c-94cd-490b-b853-f0497a8a4044"
   data-page-id="{{ .Permalink }}"
   data-page-url="{{ .Permalink }}"
   data-page-title="{{ .Title }}"
+  data-lang="ru"
 ></div>
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 {{ end }}
