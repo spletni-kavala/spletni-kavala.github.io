@@ -43,7 +43,7 @@ tags = []
 ## Как опубликовать
 
 ```bash
-git add -A && git commit -m "New post: my-post" && git push
+git add -A && git commit -m "edit" && git push
 ```
 
 Сайт обновится автоматически через 30-60 секунд.
