@@ -1,12 +1,7 @@
 +++
 title = "Семья Сталкеров"
 date = "2026-07-24T00:09:28+05:00"
-
-#
-# description is optional
-#
-# description = "An optional description for SEO. If not provided, an automatically created summary will be used."
-
+slug = "semya-stalkerov"
 tags = []
 +++
 
