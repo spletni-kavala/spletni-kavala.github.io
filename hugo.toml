@@ -18,6 +18,17 @@ ignoreErrors = ["error-disable-taxonomy"]
   favicon = "images/favicon.png"
   images = ["images/share.png"]
   title = "Сплетни Кавалы"
+  hideMadeWithLine = true
+
+[[menu.main]]
+  name = "Главная"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "Посты"
+  url = "/blog/"
+  weight = 2
 
 [markup]
   [markup.highlight]
