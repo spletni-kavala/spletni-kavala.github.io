@@ -39,19 +39,28 @@
 ></div>
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 <script>
-const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-        if (mutation.addedNodes.length == 0) return;
-        const iframe = mutation.addedNodes[0];
-        if (iframe.tagName !== 'IFRAME') return;
-
-        const additionalStyles = `
-        .PoweredBy { display: none !important; }
-        [data-field="email"] { display: none !important; }
-        `;
-
-        iframe.srcdoc = iframe.srcdoc.replace('</style>', additionalStyles + '</style>');
-    });
+const cusdisCSS = `
+  a[href*="cusdis.com"] { display: none !important; }
+  div.text-center:has(> a[href*="cusdis.com"]) { display: none !important; }
+  label[for="email"] { display: none !important; }
+  input[name="email"] { display: none !important; }
+  div:has(> input[name="email"]) { display: none !important; }
+  div.grid > div:has(> div > label[for="email"]) { display: none !important; }
+`;
+const observer = new MutationObserver(() => {
+    const thread = document.getElementById('cusdis_thread');
+    if (!thread) return;
+    const iframe = thread.querySelector('iframe');
+    if (!iframe) return;
+    try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        if (doc && !doc.querySelector('#cusdis-custom-css')) {
+            const style = doc.createElement('style');
+            style.id = 'cusdis-custom-css';
+            style.textContent = cusdisCSS;
+            doc.head.appendChild(style);
+        }
+    } catch(e) {}
 });
 observer.observe(document.getElementById("cusdis_thread"), { childList: true, subtree: true });
 </script>
