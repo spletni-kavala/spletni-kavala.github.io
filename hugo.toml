@@ -31,6 +31,9 @@ ignoreErrors = ["error-disable-taxonomy"]
   weight = 2
 
 [markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
   [markup.highlight]
     style = 'friendly'
     lineNos = true
