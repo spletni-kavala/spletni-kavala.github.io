@@ -24,45 +24,51 @@
 </p>
 
 {{ if eq .Type "blog" }}
-<style>
-  #cusdis_thread { min-height: 300px; }
-  #cusdis_thread iframe { width: 100% !important; min-height: 300px; border: none !important; }
-</style>
+<script>
+window.CUSDIS_LOCALE = {
+  powered_by: "\u200B",
+  post_comment: "Отправить",
+  loading: "Загружаем комментарии\u2026",
+  email: "\u200B",
+  nickname: "Имя",
+  reply_placeholder: "Комментарий",
+  reply_btn: "Ответить",
+  sending: "Отправляется\u2026",
+  mod_badge: "МОД",
+  content_is_required: "Заполните текст комментария",
+  nickname_is_required: "Заполните имя",
+  comment_has_been_sent: "Комментарий отправлен. Он будет опубликован после модерации."
+}
+</script>
 <div id="cusdis_thread"
   data-host="https://cusdis.com"
   data-app-id="51504f4c-94cd-490b-b853-f0497a8a4044"
   data-page-id="{{ .Permalink }}"
   data-page-url="{{ .Permalink }}"
   data-page-title="{{ .Title }}"
-  data-lang="ru"
   data-theme="auto"
 ></div>
 <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
 <script>
-const cusdisCSS = `
-  a[href*="cusdis.com"] { display: none !important; }
-  div.text-center:has(> a[href*="cusdis.com"]) { display: none !important; }
-  label[for="email"] { display: none !important; }
-  input[name="email"] { display: none !important; }
-  div:has(> input[name="email"]) { display: none !important; }
-  div.grid > div:has(> div > label[for="email"]) { display: none !important; }
-`;
-const observer = new MutationObserver(() => {
-    const thread = document.getElementById('cusdis_thread');
-    if (!thread) return;
-    const iframe = thread.querySelector('iframe');
+function hideEmail() {
+    const iframe = document.querySelector('#cusdis_thread iframe');
+    if (!iframe || !iframe.contentDocument) return false;
+    const input = iframe.contentDocument.querySelector('input[name="email"]');
+    if (input) {
+        input.closest('.px-1').style.display = 'none';
+        return true;
+    }
+    return false;
+}
+function poll() {
+    if (!hideEmail()) requestAnimationFrame(poll);
+}
+const obs = new MutationObserver(() => {
+    const iframe = document.querySelector('#cusdis_thread iframe');
     if (!iframe) return;
-    try {
-        const doc = iframe.contentDocument || iframe.contentWindow.document;
-        if (doc && !doc.querySelector('#cusdis-custom-css')) {
-            const style = doc.createElement('style');
-            style.id = 'cusdis-custom-css';
-            style.textContent = cusdisCSS;
-            doc.head.appendChild(style);
-        }
-    } catch(e) {}
+    iframe.addEventListener('load', () => poll(), { once: true });
 });
-observer.observe(document.getElementById("cusdis_thread"), { childList: true, subtree: true });
+obs.observe(document.getElementById("cusdis_thread"), { childList: true, subtree: true });
 </script>
 {{ end }}
 {{ end }}
