@@ -1,2 +1,6 @@
 .PoweredBy { display: none !important; }
 [data-field="email"] { display: none !important; }
+
+#cusdis_thread iframe {
+  min-height: 400px !important;
+}

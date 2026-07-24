@@ -24,6 +24,7 @@
 </p>
 
 {{ if eq .Type "blog" }}
+<link rel="stylesheet" href="/cusdis-custom.css">
 <script>
 window.CUSDIS_LOCALE = {
   powered_by: "\u200B",
@@ -69,6 +70,20 @@ const obs = new MutationObserver(() => {
     iframe.addEventListener('load', () => poll(), { once: true });
 });
 obs.observe(document.getElementById("cusdis_thread"), { childList: true, subtree: true });
+</script>
+<script>
+window.addEventListener('message', function(e) {
+  try {
+    var msg = JSON.parse(e.data);
+    if (msg.from === 'cusdis' && msg.event === 'resize') {
+      var h = msg.data;
+      setTimeout(function() {
+        var iframe = document.querySelector('#cusdis_thread iframe');
+        if (iframe) iframe.style.height = (h + 20) + 'px';
+      }, 0);
+    }
+  } catch (err) {}
+});
 </script>
 {{ end }}
 {{ end }}
