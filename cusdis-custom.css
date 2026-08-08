@@ -1,0 +1,137 @@
+/* Cusdis comments — Сплетни Кавалы theme (Play / purple) */
+.PoweredBy { display: none !important; }
+[data-field="email"] { display: none !important; }
+
+.cusdis-comments-wrap {
+  margin-top: 2.4rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid #e4d6e4;
+  font-family: 'Play', Arial, sans-serif;
+}
+.cusdis-comments-wrap::before {
+  content: "✦ Комментарии";
+  display: block;
+  font-family: 'Play', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: #5a1349;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+
+.cusdis-comments-list {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.cusdis-comment {
+  margin: 0 0 0.9rem;
+  padding: 14px 16px;
+  background: #f7f1f6;
+  border: 1px solid #ecdfeb;
+  border-left: 3px solid #5a1349;
+  border-radius: 6px;
+}
+
+.cusdis-replies {
+  margin-top: 0.85rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid #e0cbdd;
+}
+.cusdis-reply {
+  margin: 0.7rem 0;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #efe2ee;
+  border-radius: 5px;
+}
+
+.cusdis-meta {
+  font-family: 'Play', Arial, sans-serif;
+  font-size: 0.82rem;
+  color: #7a5a76;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+}
+
+.cusdis-mod {
+  background: #5a1349;
+  color: #fff;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  margin-left: 2px;
+}
+
+.cusdis-body {
+  font-family: 'Play', Arial, sans-serif;
+  margin-top: 0.2rem;
+  line-height: 1.6;
+  color: #2f2d2f;
+  font-weight: 400;
+}
+
+.cusdis-loading,
+.cusdis-empty {
+  color: #a07aa0;
+  font-style: italic;
+  padding: 0.6rem 0;
+}
+
+.cusdis-form {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.cusdis-form input,
+.cusdis-form textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid #e0cbdd;
+  border-radius: 6px;
+  font-family: 'Play', Arial, sans-serif;
+  font-size: 0.98rem;
+  background: #fff;
+  color: #2f2d2f;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.cusdis-form input::placeholder,
+.cusdis-form textarea::placeholder { color: #b79fb4; }
+.cusdis-form input:focus,
+.cusdis-form textarea:focus {
+  outline: none;
+  border-color: #5a1349;
+  box-shadow: 0 0 0 3px rgba(90, 20, 73, 0.12);
+}
+.cusdis-form input { resize: none; }
+.cusdis-form textarea { resize: vertical; min-height: 3.4em; }
+
+.cusdis-form button {
+  align-self: flex-start;
+  padding: 10px 22px;
+  background: #5a1349;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Play', Arial, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.cusdis-form button:hover:not(:disabled) { background: #7a1f63; transform: translateY(-1px); }
+.cusdis-form button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+#cusdis_message {
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  color: #a12f86;
+}
+

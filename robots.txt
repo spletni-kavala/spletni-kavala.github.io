@@ -1,0 +1,2 @@
+User-Agent: *
+Sitemap: https://spletni-kavala.github.io/sitemap.xml
