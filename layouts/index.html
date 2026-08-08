@@ -1,0 +1,78 @@
+{{ define "title" }}Сплетни Кавалы — скандальные новости и интриги острова Amazing RP Arma 3{{ end }}
+{{ define "main" }}
+<link rel="stylesheet" href="{{ "magazine.css" | relURL }}">
+
+<section class="welcome">
+  <div class="welcome-inner">
+  <div class="welcome-text">
+    <h2>Добро пожаловать</h2>
+    <p>
+      Вы на сайте Сплетни Кавалы, первом и единственном обозревателе жизни золотой молодежи
+      Кавалы. Я - аноним... Да-да, как в популярном Американском сериале.
+      Мое золотое правило - <em>«Ты никто, пока о тебе не говорят»</em>. Если вы популярны,
+      будьте уверены, я о вас расскажу. Список моих главных героев вы можете найти в разделе
+      «Лица», хотя многие имена уже говорят сами за себя. Однако недостаточно просто хвастаться
+      размерами папиного кошелька - как бы вы ни были сказочно богаты, умение правильно себя
+      преподнести не купишь ни за какие деньги.
+    </p>
+    <p>
+      Но помните: <em>"в эту компанию трудно попасть, но еще труднее в ней остаться"</em>.
+      Будьте уверены, ваша репутация может быть уничтожена в один клик моей мышки. А пока,
+      наслаждайтесь рассказами о самых громких разводах, сексе по-пьяне и историями из клубов,
+      отчетами о "модных" показах, светских балах, репортажами из вип-зоны концертов
+      и многим другим.
+    </p>
+    <p>
+      Как я люблю говорить, все тайное становится явным, хотя мои герои профессионально
+      заметают следы. Пристегнитесь, это будет путешествие со скоростью новенького мазератти,
+      взятого для гонок в Монте-Карло. Можете не сомневаться, эта жизнь лишь кажется сказочной.
+      И на протяжении уже двух лет безустанно рассказываем все новые и новые истории.
+      И это только начало.
+    </p>
+    <p class="welcome-sign"><strong>XOXO - С.К.</strong></p>
+  </div>
+
+  <div class="welcome-collage">
+    {{ $imgs := slice
+        "photo-01.jpg"
+        "photo-04.jpg"
+        "photo-05.jpg"
+        "photo-06.jpg"
+        "image1.png"
+        "unknown2.png"
+        "photo-02.jpg"
+        "image6.png" }}
+    {{ range $i, $name := $imgs }}
+    <img src="{{ (printf "images/collage/%s" $name) | relURL }}" alt="" class="collage-photo collage-photo-{{ add $i 1 }}">
+    {{ end }}
+  </div>
+  </div>
+</section>
+
+<div class="telegram-cta">
+  <div class="telegram-cta-inner">
+    <p class="telegram-cta-text">Хотите первыми узнавать самые свежие сплетни и интриги Кавалы?</p>
+    <a class="telegram-cta-btn" href="https://t.me/spletni_kavala" target="_blank" rel="noopener">Подписывайтесь на наш Telegram</a>
+  </div>
+</div>
+
+<div class="latest">
+  <div class="latest-head">
+    <img class="sparkle" src="{{ "images/sparkle.gif" | relURL }}" alt="" aria-hidden="true">
+    <h2 class="latest-title">Последние сплетни</h2>
+    <img class="sparkle" src="{{ "images/sparkle.gif" | relURL }}" alt="" aria-hidden="true">
+  </div>
+  <div class="latest-tiles">
+    {{ range first 3 (where .Site.RegularPages "Section" "gossip") }}
+    <a href="{{ .Permalink }}" class="tile">
+      <time datetime='{{ .Date.Format "2006-01-02" }}'>{{ .Date | time.Format "2 January 2006" }}</time>
+      <h3>{{ .Title }}</h3>
+      <span class="tile-more">Читать ✦</span>
+    </a>
+    {{ end }}
+  </div>
+  <div class="latest-more">
+    <a href="{{ "gossip/" | relURL }}">Все сплетни →</a>
+  </div>
+</div>
+{{ end }}

@@ -1,0 +1,46 @@
+baseURL = "https://spletni-kavala.github.io/"
+theme = 'hugo-bearblog'
+title = "Сплетни Кавалы"
+author = "spletni-kavala"
+languageCode = "ru"
+locale = "ru-RU"
+
+enableRobotsTXT = true
+
+disableKinds = ["taxonomy"]
+ignoreErrors = ["error-disable-taxonomy"]
+[permalinks]
+  gossip = "/:slug/"
+  tags = "/gossip/:slug"
+
+[params]
+  description = "Первый анонимный обозреватель золотой молодёжи острова Amazing RP Arma 3. Вся правда здесь."
+  favicon = "images/favicon.png"
+  images = ["images/share.png"]
+  title = "Сплетни Кавалы"
+  hideMadeWithLine = true
+
+[[menu.main]]
+  name = "Главная"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "Сплетни"
+  url = "/gossip/"
+  weight = 2
+
+[[menu.main]]
+  name = "Лица"
+  url = "/people/"
+  weight = 3
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    style = 'friendly'
+    lineNos = true
+    lineNumbersInTable = false
+    codeFences = true

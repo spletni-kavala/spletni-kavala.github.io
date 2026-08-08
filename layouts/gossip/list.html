@@ -1,0 +1,45 @@
+{{ define "title" }}Сплетни и новости острова Amazing RP Arma 3 | Сплетни Кавалы{{ end }}
+{{ define "main" }}
+<link rel="stylesheet" href="{{ "magazine.css" | relURL }}">
+
+<section class="latest gossip-list">
+  <div class="latest-head">
+    <img class="sparkle" src="{{ "images/sparkle.gif" | relURL }}" alt="" aria-hidden="true">
+    <h1 class="latest-title">Все сплетни</h1>
+    <img class="sparkle" src="{{ "images/sparkle.gif" | relURL }}" alt="" aria-hidden="true">
+  </div>
+
+  {{ $paginator := .Paginate .Pages 27 }}
+  <div class="gossip-grid">
+    {{ range $paginator.Pages }}
+    {{ $cover := .Params.cover }}
+    <a href="{{ .Permalink }}" class="gtile">
+      {{ with $cover }}
+      <img class="gtile-cover" src="{{ . | relURL }}" alt="" loading="lazy">
+      {{ else }}
+      <span class="gtile-cover gtile-cover--fallback" aria-hidden="true">✦</span>
+      {{ end }}
+      <div class="gtile-body">
+        <time datetime='{{ .Date.Format "2006-01-02" }}'>{{ .Date | time.Format "2 January 2006" }}</time>
+        <h3>{{ .Title }}</h3>
+        <p class="gtile-excerpt">{{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 "…" }}{{ end }}</p>
+        <span class="gtile-more">Читать ✦</span>
+      </div>
+    </a>
+    {{ else }}
+    <p class="gossip-empty">Пока нет сплетен. Скоро будут 👀</p>
+    {{ end }}
+  </div>
+
+  {{ if gt $paginator.TotalPages 1 }}
+  <nav class="pager" aria-label="Страницы">
+    {{ if $paginator.HasPrev }}<a class="pager-num pager-btn" href="{{ $paginator.Prev.URL }}" aria-label="Назад">←</a>{{ end }}
+    {{ range $paginator.Pagers }}
+      {{ if eq . $paginator }}<span class="pager-num pager-num--active">{{ .PageNumber }}</span>
+      {{ else }}<a class="pager-num" href="{{ .URL }}">{{ .PageNumber }}</a>{{ end }}
+    {{ end }}
+    {{ if $paginator.HasNext }}<a class="pager-num pager-btn" href="{{ $paginator.Next.URL }}" aria-label="Вперёд">→</a>{{ end }}
+  </nav>
+  {{ end }}
+</section>
+{{ end }}

@@ -1,0 +1,35 @@
+{{/* reactions bar — pass (dict "slug" "<unique-key>") */}}
+<div class="reactions" data-slug="{{ .slug }}">
+  <div class="reactions-title">{{ .title | default "✦ Как тебе?" }}</div>
+  <div class="reactions-row">
+    <button class="react-btn" type="button" data-emoji="love"><img class="react-emoji" src="{{ "images/reactions/give_heart.gif" | relURL }}" alt="сердечко"><span class="react-count">0</span></button>
+    <button class="react-btn" type="button" data-emoji="haha"><img class="react-emoji" src="{{ "images/reactions/rofl.gif" | relURL }}" alt="смех"><span class="react-count">0</span></button>
+    <button class="react-btn" type="button" data-emoji="wow"><img class="react-emoji" src="{{ "images/reactions/shok.gif" | relURL }}" alt="удивление"><span class="react-count">0</span></button>
+    <button class="react-btn" type="button" data-emoji="angry"><img class="react-emoji" src="{{ "images/reactions/ireful.gif" | relURL }}" alt="недовольство"><span class="react-count">0</span></button>
+    <button class="react-btn" type="button" data-emoji="cry"><img class="react-emoji" src="{{ "images/reactions/cray.gif" | relURL }}" alt="плачет"><span class="react-count">0</span></button>
+    <button class="react-btn" type="button" data-emoji="dislike"><img class="react-emoji" src="{{ "images/reactions/bad.gif" | relURL }}" alt="не нравится"><span class="react-count">0</span></button>
+  </div>
+</div>
+<script>
+(function(){
+  var API='https://abacus.jasoncameron.dev', NS='spletni-kavala';
+  var box=document.currentScript.previousElementSibling; if(!box||!box.classList.contains('reactions')) box=document.querySelector('.reactions');
+  if(!box) return;
+  var slug=box.getAttribute('data-slug'), lsKey='reacted_'+slug;
+  var chosen=localStorage.getItem(lsKey);
+  if(chosen) box.classList.add('done');
+  box.querySelectorAll('.react-btn').forEach(function(btn){
+    var emoji=btn.getAttribute('data-emoji'), key=slug+'-'+emoji, countEl=btn.querySelector('.react-count');
+    if(chosen===emoji) btn.classList.add('reacted');
+    fetch(API+'/get/'+NS+'/'+encodeURIComponent(key)).then(function(r){return r.json();})
+      .then(function(d){ if(d&&typeof d.value==='number') countEl.textContent=d.value; }).catch(function(){});
+    btn.addEventListener('click',function(){
+      if(localStorage.getItem(lsKey)) return;
+      localStorage.setItem(lsKey,emoji); box.classList.add('done'); btn.classList.add('reacted');
+      countEl.textContent=(parseInt(countEl.textContent||'0',10)+1);
+      fetch(API+'/hit/'+NS+'/'+encodeURIComponent(key)).then(function(r){return r.json();})
+        .then(function(d){ if(d&&typeof d.value==='number') countEl.textContent=d.value; }).catch(function(){});
+    });
+  });
+})();
+</script>

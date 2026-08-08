@@ -1,0 +1,112 @@
+{{/* Cusdis comments — pass (dict "pageid" .Permalink) */}}
+<div class="post-comments-wrap">
+<link rel="stylesheet" href="/cusdis-custom.css">
+<div class="cusdis-comments-wrap">
+  <div id="cusdis_comments_list" class="cusdis-comments-list"></div>
+  <div class="cusdis-form">
+    <input type="text" id="cusdis_nickname" placeholder="Имя">
+    <textarea id="cusdis_content" placeholder="Комментарий" rows="3"></textarea>
+    <button id="cusdis_submit" onclick="cusdisSubmit()">Отправить</button>
+    <div id="cusdis_message"></div>
+  </div>
+</div>
+<script>
+(function() {
+  var APP_ID = '51504f4c-94cd-490b-b853-f0497a8a4044';
+  var PAGE_ID = '{{ .pageid }}';
+  var API = 'https://cusdis.com';
+
+  function api(path, opts) {
+    return fetch(API + path, Object.assign({
+      headers: {
+        'Content-Type': 'application/json',
+        'x-timezone-offset': -new Date().getTimezoneOffset()
+      }
+    }, opts || {}));
+  }
+
+  function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+
+  function fmtDate(s) {
+    if (!s) return '';
+    var p = s.match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2})/);
+    if (!p) return esc(s);
+    var months = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+    return p[3].replace(/^0/,'') + ' ' + months[parseInt(p[2],10)-1] + ' ' + p[1];
+  }
+
+  function renderComment(c) {
+    var modBadge = c.moderatorId ? ' <span class="cusdis-mod">МОД</span>' : '';
+    var author = (c.moderator && c.moderator.displayName) ? esc(c.moderator.displayName) : esc(c.by_nickname);
+    var replies = '';
+    if (c.replies && c.replies.data && c.replies.data.length) {
+      replies = '<div class="cusdis-replies">' + c.replies.data.map(function(r) {
+        var rAuthor = (r.moderator && r.moderator.displayName) ? esc(r.moderator.displayName) : esc(r.by_nickname);
+        var rMod = r.moderatorId ? ' <span class="cusdis-mod">МОД</span>' : '';
+        return '<div class="cusdis-reply">' +
+          '<div class="cusdis-meta">' + rAuthor + rMod + ' · ' + fmtDate(r.parsedCreatedAt) + '</div>' +
+          '<div class="cusdis-body">' + r.parsedContent + '</div>' +
+        '</div>';
+      }).join('') + '</div>';
+    }
+    return '<div class="cusdis-comment">' +
+      '<div class="cusdis-meta">' + author + modBadge + ' · ' + fmtDate(c.parsedCreatedAt) + '</div>' +
+      '<div class="cusdis-body">' + c.parsedContent + '</div>' +
+      replies +
+    '</div>';
+  }
+
+  window.cusdisLoadComments = async function(page) {
+    var el = document.getElementById('cusdis_comments_list');
+    el.innerHTML = '<p class="cusdis-loading">Загружаем комментарии…</p>';
+    try {
+      var res = await api('/api/open/comments?appId=' + APP_ID + '&pageId=' + encodeURIComponent(PAGE_ID) + '&page=' + (page || 1));
+      var json = await res.json();
+      var comments = json.data.data;
+      if (!comments.length) {
+        el.innerHTML = '<p class="cusdis-empty">Комментариев пока нет</p>';
+        return;
+      }
+      el.innerHTML = comments.map(renderComment).join('');
+    } catch(e) {
+      el.innerHTML = '<p class="cusdis-empty">Не удалось загрузить комментарии</p>';
+    }
+  };
+
+  window.cusdisSubmit = async function() {
+    var nickname = document.getElementById('cusdis_nickname').value.trim();
+    var content = document.getElementById('cusdis_content').value.trim();
+    var msg = document.getElementById('cusdis_message');
+    var btn = document.getElementById('cusdis_submit');
+    if (!content) { msg.textContent = 'Заполните текст комментария'; return; }
+    if (!nickname) { msg.textContent = 'Заполните имя'; return; }
+    btn.disabled = true;
+    btn.textContent = 'Отправляется…';
+    try {
+      await api('/api/open/comments', {
+        method: 'POST',
+        body: JSON.stringify({
+          appId: APP_ID, pageId: PAGE_ID,
+          pageUrl: window.location.href, pageTitle: document.title,
+          nickname: nickname, content: content, email: ''
+        })
+      });
+      document.getElementById('cusdis_content').value = '';
+      msg.textContent = 'Комментарий отправлен. Он будет опубликован после модерации.';
+      cusdisLoadComments();
+    } catch(e) {
+      msg.textContent = 'Ошибка отправки';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Отправить';
+    }
+  };
+
+  cusdisLoadComments();
+})();
+</script>
+</div>

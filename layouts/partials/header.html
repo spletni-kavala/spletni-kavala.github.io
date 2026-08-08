@@ -1,0 +1,22 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+::selection { background: #5a1349; color: #fff; }
+::-moz-selection { background: #5a1349; color: #fff; }
+body > header { text-align: center; padding: 30px 16px 6px; }
+.site-logo { display: inline-block; line-height: 0; }
+.site-logo img { height: 66px; width: auto; }
+.site-nav { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 18px; }
+.site-nav a { text-decoration: none; color: #5a1349; text-transform: uppercase; letter-spacing: 2px; font-size: 15px; font-weight: 700; font-family: 'Play', Arial, sans-serif; }
+.site-nav a:hover { color: #a12f86; }
+.site-nav .nav-sep { color: #c86ab0; font-size: 11px; user-select: none; }
+@media (max-width: 520px) { .site-logo img { height: 48px; } .site-nav { gap: 10px; } .site-nav a { font-size: 13px; letter-spacing: 1px; } }
+</style>
+<a href="{{ "" | relURL }}" class="site-logo">
+  <img src="{{ "logo.gif" | relURL }}" alt="{{ .Site.Title }}">
+</a>
+<nav class="site-nav">
+  {{- range $i, $e := .Site.Menus.main -}}
+    {{- if $i }}<span class="nav-sep">✦</span>{{ end -}}
+    <a href="{{ $e.URL | relURL }}">{{ $e.Name }}</a>
+  {{- end -}}
+</nav>

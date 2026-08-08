@@ -1,0 +1,50 @@
+{{ define "main" }}
+<link rel="stylesheet" href="{{ "magazine.css" | relURL }}">
+<article class="post">
+{{ if eq .Type "gossip" }}{{ if not .Params.menu }}
+  {{ with .Params.cover }}<img class="post-cover" src="{{ . | relURL }}" alt="">{{ end }}
+  <h1 class="post-title">{{ .Title }}</h1>
+  <p class="post-date">
+    <time datetime='{{ .Date.Format "2006-01-02" }}'>{{ .Date | time.Format "2 January 2006" }}</time>
+  </p>
+{{ end }}{{ end }}
+  <div class="post-content">
+    {{ .Content }}
+  </div>
+{{ if eq .Type "gossip" }}{{ if not .Params.menu }}
+  <div class="post-foot">
+    <a class="post-back" href="{{ "gossip/" | relURL }}">← Все сплетни</a>
+    <div class="post-tags">
+      {{ range (.GetTerms "tags") }}<a href="{{ .Permalink }}">#{{ .LinkTitle }}</a>{{ end }}
+    </div>
+  </div>
+{{ end }}{{ end }}
+</article>
+
+{{ if eq .Type "gossip" }}{{ if not .Params.menu }}
+{{ if or .PrevInSection .NextInSection }}
+<nav class="post-nav" aria-label="Соседние сплетни">
+  {{ with .PrevInSection }}
+  <a class="post-nav-item post-nav-prev" href="{{ .Permalink }}">
+    <span class="post-nav-dir">← Предыдущая</span>
+    <b class="post-nav-title">{{ .Title }}</b>
+  </a>
+  {{ else }}<span class="post-nav-item" style="visibility:hidden"></span>{{ end }}
+  {{ with .NextInSection }}
+  <a class="post-nav-item post-nav-next" href="{{ .Permalink }}">
+    <span class="post-nav-dir">Следующая →</span>
+    <b class="post-nav-title">{{ .Title }}</b>
+  </a>
+  {{ end }}
+</nav>
+{{ end }}
+{{ end }}{{ end }}
+
+{{ if eq .Type "gossip" }}{{ if not .Params.menu }}
+{{ partial "reactions.html" (dict "slug" .File.BaseFileName "title" "✦ Как тебе сплетня?") }}
+{{ end }}{{ end }}
+
+{{ if eq .Type "gossip" }}
+{{ partial "comments.html" (dict "pageid" .Permalink) }}
+{{ end }}
+{{ end }}
